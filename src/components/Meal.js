@@ -6,7 +6,7 @@ class Meal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            meal: {},
+            meal: this.props.meal || {},
             dishType: this.props.dishType,
             disabled: false,
             showRecipe: false
@@ -14,6 +14,7 @@ class Meal extends React.Component {
 
         this.showRecipe = this.showRecipe.bind(this);
         this.toggleSkip = this.toggleSkip.bind(this);
+        this.getRandomRecipe = this.getRandomRecipe.bind(this);
     }
 
     toggleSkip() {
@@ -27,6 +28,24 @@ class Meal extends React.Component {
         this.setState({
             showRecipe: !this.state.showRecipe
         })
+    }
+
+    getRandomRecipe() {
+        const dishType = this.state.dishType;
+        var recipes = JSON.parse(localStorage.getItem(dishType + "-meals"));
+        let recipe = recipes[Math.floor(Math.random() * recipes.length)];
+        this.setState({
+            meal: recipe
+        })
+        console.log(recipe);
+    }
+
+
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.meal !== this.state.meal) {
+            this.props.saveMeal(this.state.dishType, this.state.meal);
+        }
     }
 
     render() {
@@ -47,12 +66,12 @@ class Meal extends React.Component {
                 <div className="flex-column w-100 p-0 m-0 rounded">
                     <Recipe show={this.state.showRecipe} handleShow={this.showRecipe} meal={this.state.meal}></Recipe>
                     <div className="p-2 m-0">
-                        {this.state.dishType}
+                        {this.state.meal.title}
                     </div>
                     <div className="p-2 m-0 btn-group">
                         <button className="btn btn-sm btn-info" onClick={this.toggleSkip}>Skip</button>
                         <button className="btn btn-sm btn-info" onClick={this.showRecipe}>Recipe</button>
-                        <button className="btn btn-sm btn-success" onClick={this.toggleSkip}>Hit</button>
+                        <button className="btn btn-sm btn-success" onClick={this.getRandomRecipe}>Hit</button>
                     </div>
                 </div>
             );

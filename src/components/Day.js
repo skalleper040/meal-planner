@@ -7,18 +7,30 @@ class Day extends React.Component {
         super(props);
 
         this.state = {
-            dayName: '',
-            breakfast: {},
-            lunch: {},
-            dinner: {},
-            id: this.props.id
+            id: this.props.id,
+            meals: this.props.meals
         }
-
         this.handleRemove = this.handleRemove.bind(this);
+        this.saveMeal = this.saveMeal.bind(this);
+    }
+
+    saveMeal(dishType, meal) {
+        this.setState(prevState => ({
+            meals: {
+                ...prevState.meals,
+                [dishType]: meal
+            }
+        }))
     }
 
     handleRemove() {
         this.props.removeDay(this.state.id);
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState !== this.state) {
+            this.props.saveDay(this.state);
+        }
     }
 
     render() {
@@ -30,13 +42,13 @@ class Day extends React.Component {
                     </button>
                 </div>
                 <div className="row no-gutters border-top rounded">
-                    <Meal dishType="breakfast"></Meal>
+                    <Meal dishType="breakfast" saveMeal={this.saveMeal} meal={this.props.meals.breakfast}></Meal>
                 </div>
                 <div className="row no-gutters border-top rounded">
-                    <Meal dishType="lunch"></Meal>
+                    <Meal dishType="lunch" saveMeal={this.saveMeal} meal={this.props.meals.lunch}></Meal>
                 </div>
                 <div className="row no-gutters border-top rounded">
-                    <Meal dishType="dinner"></Meal>
+                    <Meal dishType="dinner" saveMeal={this.saveMeal} meal={this.props.meals.dinner}></Meal>
                 </div>
             </div>
         );
