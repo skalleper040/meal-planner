@@ -24,9 +24,11 @@ class Day extends React.Component {
     render() {
         return (
             <div className="border p-0 m-0 rounded">
-                <span className="text-danger p-2">
-                    <i onClick={this.handleRemove} className="fa fa-times" id="remove"></i>
-                </span>
+                <div className="row justify-content-end no-gutters">
+                    <button type="button" className="close m-2" data-dismiss="modal" aria-label="Close" onClick={this.handleRemove}>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
                 <div className="row no-gutters border-top rounded">
                     <Meal dishType="breakfast"></Meal>
                 </div>
