@@ -3,10 +3,6 @@ import '../App.css';
 
 class Recipe extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     createIngredients = () => {
         if (this.props.units === 'metric') {
             return (

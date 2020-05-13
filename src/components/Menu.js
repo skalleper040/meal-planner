@@ -30,11 +30,20 @@ class Menu extends React.Component {
                             Shopping-list
                         </button>
                     </li>
-                    <li className="nav-item ml-4">
-                        <select className="custom-select" onChange={this.handleChangeUnits} value={this.props.units}>
-                            <option value="metric">Metric</option>
-                            <option value="us">US</option>
-                        </select>
+                    <li className="nav-item ml-4 form-group row align-items-baseline">
+                        <div className="col-3">
+                            <label htmlFor="unitSelect">Units</label>
+                        </div>
+                        <div className="col">
+                            <select
+                                id="unitSelect"
+                                className="form-control form-control-sm"
+                                onChange={this.handleChangeUnits}
+                                value={this.props.units}>
+                                <option value="metric">Metric</option>
+                                <option value="us">US</option>
+                            </select>
+                        </div>
                     </li>
                 </ul>
             </nav>

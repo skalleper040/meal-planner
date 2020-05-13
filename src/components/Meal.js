@@ -18,7 +18,7 @@ class Meal extends React.Component {
     }
 
     componentDidMount() {
-        if (this.props.meal.meal == undefined) {
+        if (this.props.meal.meal === undefined) {
             this.getRandomRecipe()
         }
     }
