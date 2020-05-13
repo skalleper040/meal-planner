@@ -23,11 +23,16 @@ class Meal extends React.Component {
         }
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState !== this.state) {
+            this.props.saveMeal(this.state.dishType, this.state.meal, this.state.disabled);
+        }
+    }
+
     toggleSkip() {
         let disabled = this.state.disabled;
         this.setState({
-            disabled: !disabled,
-            meal: {}
+            disabled: !disabled
         })
     }
 
@@ -45,12 +50,6 @@ class Meal extends React.Component {
             meal: recipe
         })
         console.log(recipe);
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        if (prevState.meal !== this.state.meal) {
-            this.props.saveMeal(this.state.dishType, this.state.meal, this.state.disabled);
-        }
     }
 
     render() {
