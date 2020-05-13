@@ -65,13 +65,14 @@ class ShoppingList extends React.Component {
             return (
                 <div class="card-columns">
                     {Object.entries(groupedIngredients).map((group, ingredients) =>
-                    <div key={group} className="card">
-                        <div className="card-header">
-                            {group[0]}
-                        </div>
-
-                        {this.props.units === 'metric' ? this.showMetricIngredients(group[1]) : this.showIngredients(group[1])}
-                    </div>)}
+                        <div key={group} className="card shadow-sm">
+                            <div className="card-header">
+                                {group[0]}
+                            </div>
+                            <div className="card-body">
+                                {this.props.units === 'metric' ? this.showMetricIngredients(group[1]) : this.showIngredients(group[1])}
+                            </div>
+                        </div>)}
                 </div>)
         } else {
             return (
@@ -85,7 +86,7 @@ class ShoppingList extends React.Component {
 
     showMetricIngredients(ingredients) {
         return (
-            <ul className="list-group-flush">
+            <ul className="list-group list-group-flush">
                 {ingredients.map(ingredient => (
                     <li
                         className="list-group-item"
@@ -100,7 +101,7 @@ class ShoppingList extends React.Component {
 
     showIngredients(ingredients) {
         return (
-            <ul className="list-group-flush">
+            <ul className="list-group list-group-flush">
                 {ingredients.map(ingredient => (
                     <li
                         className="list-group-item"
