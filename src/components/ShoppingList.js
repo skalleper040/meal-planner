@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'underscore';
 
 class ShoppingList extends React.Component {
 
@@ -48,26 +49,30 @@ class ShoppingList extends React.Component {
             }
         })
 
+        const grouped = _.groupBy(ingredients, ingredient =>
+            ingredient.aisle.substr(0, ingredient.aisle.indexOf(';') > 0 ?
+                ingredient.aisle.indexOf(';') : ingredient.aisle.length));
+
         this.setState({
-            ingredients: ingredients
+            ingredients: grouped
         })
+
     }
 
-    showMetricIngredients() {
-        let ingredients = this.state.ingredients;
-        if (ingredients.length > 0) {
+    showIngredientCategories() {
+        let groupedIngredients = this.state.ingredients;
+        if (!_.isEmpty(groupedIngredients)) {
             return (
-                <ul className="list-group-flush">
-                    {ingredients.map(ingredient => (
-                        <li
-                            className="list-group-item"
-                            key={ingredient.name}>
-                            {ingredient.measures.metric.amount} {ingredient.measures.metric.unitShort} {ingredient.name}
-                        </li>
-                    ))
-                    }
-                </ul>
-            );
+                <div class="card-columns">
+                    {Object.entries(groupedIngredients).map((group, ingredients) =>
+                    <div key={group} className="card">
+                        <div className="card-header">
+                            {group[0]}
+                        </div>
+
+                        {this.props.units === 'metric' ? this.showMetricIngredients(group[1]) : this.showIngredients(group[1])}
+                    </div>)}
+                </div>)
         } else {
             return (
                 <div className="alert alert-primary" role="alert">
@@ -77,28 +82,35 @@ class ShoppingList extends React.Component {
         }
     }
 
-    showIngredients() {
-        let ingredients = this.state.ingredients;
-        if (ingredients.length > 0) {
-            return (
-                <ul className="list-group-flush">
-                    {ingredients.map(ingredient => (
-                        <li
-                            className="list-group-item"
-                            key={ingredient.name}>
-                            {ingredient.amount} {ingredient.unit} {ingredient.name}
-                        </li>
-                    ))
-                    }
-                </ul>
-            );
-        } else {
-            return (
-                <div class="alert alert-primary" role="alert">
-                    Nothing to shop!
-                </div>
-            )
-        }
+
+    showMetricIngredients(ingredients) {
+        return (
+            <ul className="list-group-flush">
+                {ingredients.map(ingredient => (
+                    <li
+                        className="list-group-item"
+                        key={ingredient.name}>
+                        {ingredient.measures.metric.amount} {ingredient.measures.metric.unitShort} {ingredient.name}
+                    </li>
+                ))
+                }
+            </ul>
+        );
+    }
+
+    showIngredients(ingredients) {
+        return (
+            <ul className="list-group-flush">
+                {ingredients.map(ingredient => (
+                    <li
+                        className="list-group-item"
+                        key={ingredient.name}>
+                        {ingredient.amount} {ingredient.unit} {ingredient.name}
+                    </li>
+                ))
+                }
+            </ul>
+        );
     }
 
     render() {
@@ -107,7 +119,11 @@ class ShoppingList extends React.Component {
             return (
                 <main className="row">
                     <article className="col-12 p-4">
-                        {this.props.units === 'metric' ? this.showMetricIngredients() : this.showIngredients()}
+                        {
+                            this.showIngredientCategories()
+                        /*
+                        this.props.units === 'metric' ? this.showMetricIngredients() : this.showIngredients()
+                        */}
                     </article>
                 </main>
             );
