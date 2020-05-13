@@ -21,16 +21,16 @@ class ShoppingList extends React.Component {
         let meals = [];
         this.props.days.forEach(day => {
             console.log(day)
-            meals.push(day.meals.breakfast)
-            meals.push(day.meals.lunch)
-            meals.push(day.meals.dinner)
+            meals.push(day.meals.breakfast.meal)
+            meals.push(day.meals.lunch.meal)
+            meals.push(day.meals.dinner.meal)
         });
         console.log(meals)
 
         let mapIngredients = new Map();
 
         meals.forEach(meal => {
-            if (meal.extendedIngredients) {
+            if (meal) {
                 meal.extendedIngredients.forEach(ingredient => {
                     if (mapIngredients.get(ingredient.name) !== undefined) {
                         let tmpValue = mapIngredients.get(ingredient.name)
