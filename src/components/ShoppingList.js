@@ -6,64 +6,109 @@ class ShoppingList extends React.Component {
         super(props);
         this.state = {
             meals: [],
-            ingredients: {}
+            ingredients: {},
         }
         this.getIngredients = this.getIngredients.bind(this);
     }
 
     componentDidUpdate(prevProps, prevState) {
         if (prevProps !== this.props) {
-            this.getIngredients()
+            if (prevProps.units !== this.props.units) {
+                return;
+            }
+            else {
+                this.getIngredients()
+            }
         }
     }
 
     getIngredients() {
         let meals = [];
+        let ingredients = [];
         this.props.days.forEach(day => {
-            console.log(day)
             Object.entries(day.meals).map((meal) => {
                 if (!meal[1].disabled) {
                     meals.push(meal[1].meal)
                 }
             })
         });
-        console.log(meals)
-
-        let mapIngredients = new Map();
 
         meals.forEach(meal => {
-            if (meal != undefined && meal.extendedIngredients) {
+            if (meal !== undefined && meal.extendedIngredients) {
                 meal.extendedIngredients.forEach(ingredient => {
-                    if (mapIngredients.get(ingredient.name) !== undefined) {
-                        let tmpValue = mapIngredients.get(ingredient.name)
-                        mapIngredients.set(ingredient.name, { amount: (tmpValue.amount + ingredient.amount), unit: ingredient.unit })
+                    let oldIngredient = ingredients.find(i => i.name === ingredient.name);
+                    if (oldIngredient !== undefined) {
+                        oldIngredient.amount += ingredient.amount;
+                        oldIngredient.measures.metric.amount += ingredient.measures.metric.amount;
+                        oldIngredient.measures.us.amount += ingredient.measures.us.amount;
                     } else {
-                        mapIngredients.set(ingredient.name, { amount: ingredient.amount, unit: ingredient.unit })
+                        ingredients.push(ingredient)
                     }
                 })
             }
         })
-        console.log(mapIngredients)
+
         this.setState({
-            ingredients: mapIngredients
+            ingredients: ingredients
         })
     }
 
-    showIngredients() {
-        return (
-            <ul>
-                {[...this.state.ingredients.entries()].map(([k,v]) => (
-                    <li key={k}>{k} {v.amount} {v.unit}</li>
-                ))}
-            </ul>
-        );
+    showMetricIngredients() {
+        let ingredients = this.state.ingredients;
+        if (ingredients.length > 0) {
+            return (
+                <ul className="list-group-flush">
+                    {ingredients.map(ingredient => (
+                        <li
+                            className="list-group-item"
+                            key={ingredient.name}>
+                            {ingredient.measures.metric.amount} {ingredient.measures.metric.unitShort} {ingredient.name}
+                        </li>
+                    ))
+                    }
+                </ul>
+            );
+        } else {
+            return (
+                <div className="alert alert-primary" role="alert">
+                    Nothing to shop!
+                </div>
+            )
+        }
     }
+
+    showIngredients() {
+        let ingredients = this.state.ingredients;
+        if (ingredients.length > 0) {
+            return (
+                <ul className="list-group-flush">
+                    {ingredients.map(ingredient => (
+                        <li
+                            className="list-group-item"
+                            key={ingredient.name}>
+                            {ingredient.amount} {ingredient.unit} {ingredient.name}
+                        </li>
+                    ))
+                    }
+                </ul>
+            );
+        } else {
+            return (
+                <div class="alert alert-primary" role="alert">
+                    Nothing to shop!
+                </div>
+            )
+        }
+    }
+
     render() {
         const show = this.props.show;
         if (show) {
             return (
-                <main>
-                    {this.showIngredients()}
+                <main className="row">
+                    <article className="col-12 p-4">
+                        {this.props.units === 'metric' ? this.showMetricIngredients() : this.showIngredients()}
+                    </article>
                 </main>
             );
         } else {

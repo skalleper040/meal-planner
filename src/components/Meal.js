@@ -18,7 +18,7 @@ class Meal extends React.Component {
     }
 
     componentDidMount() {
-        if (this.props.meal.meal == undefined) {
+        if (this.props.meal.meal === undefined) {
             this.getRandomRecipe()
         }
     }
@@ -65,7 +65,7 @@ class Meal extends React.Component {
         } else {
             return (
                 <div className="flex-column w-100 p-0 m-0 rounded">
-                    <Recipe show={this.state.showRecipe} handleShow={this.showRecipe} meal={this.state.meal}></Recipe>
+                    <Recipe units={this.props.units} show={this.state.showRecipe} handleShow={this.showRecipe} meal={this.state.meal}></Recipe>
                     <div className="p-4 m-0 text-center">
                         <h6>{this.state.meal.title}</h6>
                     </div>

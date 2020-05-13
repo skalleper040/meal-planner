@@ -5,6 +5,8 @@ import Days from './components/Days';
 import ShoppingList from './components/ShoppingList';
 import { cacheRecipes } from './util/APIUtil'
 
+import './App.css';
+
 import Recipes from './util/recipes.json'
 
 class App extends React.Component {
@@ -17,9 +19,11 @@ class App extends React.Component {
       days: [],
       isLoading: true,
       fetchError: false,
+      units: 'metric'
     }
     this.saveDays = this.saveDays.bind(this);
     this.toggleShow = this.toggleShow.bind(this);
+    this.changeUnits = this.changeUnits.bind(this);
   }
 
   async componentDidMount() {
@@ -35,6 +39,12 @@ class App extends React.Component {
           })
         }
       })
+  }
+
+  changeUnits(units) {
+    this.setState({
+      units: units
+    })
   }
 
   saveDays(days) {
@@ -71,11 +81,20 @@ class App extends React.Component {
     } else {
       return (
         <div className="container p-4">
-          <nav className="row">
-            <Menu toggleShow={this.toggleShow} showDays={this.state.showDays} showShoppingList={this.state.showShoppingList}></Menu>
-          </nav>
-          <Days show={this.state.showDays} saveDays={this.saveDays}></Days>
-          <ShoppingList show={this.state.showShoppingList} days={this.state.days}></ShoppingList>
+          <Menu
+            units={this.state.units}
+            changeUnits={this.changeUnits}
+            toggleShow={this.toggleShow}
+            showDays={this.state.showDays}
+            showShoppingList={this.state.showShoppingList} />
+          <Days
+            units={this.state.units}
+            show={this.state.showDays}
+            saveDays={this.saveDays} />
+          <ShoppingList
+            units={this.state.units}
+            show={this.state.showShoppingList}
+            days={this.state.days} />
         </div>
       );
     }

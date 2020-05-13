@@ -45,13 +45,13 @@ class Day extends React.Component {
                     </button>
                 </div>
                 <div className="row no-gutters border-top rounded">
-                    <Meal dishType="breakfast" saveMeal={this.saveMeal} meal={this.props.meals.breakfast}></Meal>
+                    <Meal units={this.props.units} dishType="breakfast" saveMeal={this.saveMeal} meal={this.props.meals.breakfast}></Meal>
                 </div>
                 <div className="row no-gutters border-top rounded">
-                    <Meal dishType="lunch" saveMeal={this.saveMeal} meal={this.props.meals.lunch}></Meal>
+                    <Meal units={this.props.units} dishType="lunch" saveMeal={this.saveMeal} meal={this.props.meals.lunch}></Meal>
                 </div>
                 <div className="row no-gutters border-top rounded">
-                    <Meal dishType="dinner" saveMeal={this.saveMeal} meal={this.props.meals.dinner}></Meal>
+                    <Meal units={this.props.units} dishType="dinner" saveMeal={this.saveMeal} meal={this.props.meals.dinner}></Meal>
                 </div>
             </div>
         );

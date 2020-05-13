@@ -3,18 +3,24 @@ import '../App.css';
 
 class Recipe extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     createIngredients = () => {
-        return (
-            <ul className="list-group list-group-flush">
-                {this.props.meal.extendedIngredients.map((ingredient, i) => (
-                    <li className="list-group-item" key={i}>{ingredient.measures.metric.amount}{ingredient.measures.metric.unitShort} {ingredient.name}</li>
-                ))}
-            </ul>
-        );
+        if (this.props.units === 'metric') {
+            return (
+                <ul className="list-group list-group-flush">
+                    {this.props.meal.extendedIngredients.map((ingredient, i) => (
+                        <li className="list-group-item" key={i}>{ingredient.measures.metric.amount}{ingredient.measures.metric.unitShort} {ingredient.name}</li>
+                    ))}
+                </ul>
+            );
+        } else {
+            return (
+                <ul className="list-group list-group-flush">
+                    {this.props.meal.extendedIngredients.map((ingredient, i) => (
+                        <li className="list-group-item" key={i}>{ingredient.measures.us.amount}{ingredient.measures.us.unitShort} {ingredient.name}</li>
+                    ))}
+                </ul>
+            );
+        }
     }
 
     createInstructions = () => {
