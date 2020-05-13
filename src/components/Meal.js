@@ -6,9 +6,9 @@ class Meal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            meal: this.props.meal || {},
+            meal: this.props.meal.meal || {},
             dishType: this.props.dishType,
-            disabled: false,
+            disabled: this.props.meal.disabled || false,
             showRecipe: false
         }
 
@@ -20,7 +20,8 @@ class Meal extends React.Component {
     toggleSkip() {
         let disabled = this.state.disabled;
         this.setState({
-            disabled: !disabled
+            disabled: !disabled,
+            meal: {}
         })
     }
 
@@ -40,11 +41,9 @@ class Meal extends React.Component {
         console.log(recipe);
     }
 
-
-
     componentDidUpdate(prevProps, prevState) {
         if (prevState.meal !== this.state.meal) {
-            this.props.saveMeal(this.state.dishType, this.state.meal);
+            this.props.saveMeal(this.state.dishType, this.state.meal, this.state.disabled);
         }
     }
 

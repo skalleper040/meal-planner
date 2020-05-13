@@ -14,11 +14,14 @@ class Day extends React.Component {
         this.saveMeal = this.saveMeal.bind(this);
     }
 
-    saveMeal(dishType, meal) {
+    saveMeal(dishType, meal, disabled) {
         this.setState(prevState => ({
             meals: {
                 ...prevState.meals,
-                [dishType]: meal
+                [dishType]: {
+                    meal: meal,
+                    disabled: disabled
+                }
             }
         }))
     }
