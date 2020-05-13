@@ -38,7 +38,7 @@ class Day extends React.Component {
 
     render() {
         return (
-            <div className="border p-0 m-0 rounded">
+            <div className="border p-0 m-0 rounded bg-light shadow-sm">
                 <div className="row justify-content-end no-gutters">
                     <button type="button" className="close m-2" data-dismiss="modal" aria-label="Close" onClick={this.handleRemove}>
                         <span aria-hidden="true">&times;</span>

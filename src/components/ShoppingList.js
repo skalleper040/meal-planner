@@ -62,9 +62,9 @@ class ShoppingList extends React.Component {
         const show = this.props.show;
         if (show) {
             return (
-                <div>
+                <main>
                     {this.showIngredients()}
-                </div>
+                </main>
             );
         } else {
             return null;

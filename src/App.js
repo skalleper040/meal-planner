@@ -58,15 +58,27 @@ class App extends React.Component {
   }
 
   render() {
-    return (
-      <div className="container">
-        <div className="row">
-          <Menu toggleShow={this.toggleShow} showDays={this.state.showDays} showShoppingList={this.state.showShoppingList}></Menu>
+    if (this.state.isLoading) {
+      return (
+        <div className="container p-4 bg-light">
+          <div className="d-flex justify-content-center">
+            <div className="spinner-border" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+          </div>
         </div>
-        <Days show={this.state.showDays} saveDays={this.saveDays}></Days>
-        <ShoppingList show={this.state.showShoppingList} days={this.state.days}></ShoppingList>
-      </div>
-    );
+      );
+    } else {
+      return (
+        <div className="container p-4">
+          <nav className="row">
+            <Menu toggleShow={this.toggleShow} showDays={this.state.showDays} showShoppingList={this.state.showShoppingList}></Menu>
+          </nav>
+          <Days show={this.state.showDays} saveDays={this.saveDays}></Days>
+          <ShoppingList show={this.state.showShoppingList} days={this.state.days}></ShoppingList>
+        </div>
+      );
+    }
   }
 }
 
