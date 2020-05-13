@@ -17,6 +17,12 @@ class Meal extends React.Component {
         this.getRandomRecipe = this.getRandomRecipe.bind(this);
     }
 
+    componentDidMount() {
+        if (this.props.meal.meal == undefined) {
+            this.getRandomRecipe()
+        }
+    }
+
     toggleSkip() {
         let disabled = this.state.disabled;
         this.setState({
