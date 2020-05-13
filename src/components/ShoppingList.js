@@ -21,9 +21,11 @@ class ShoppingList extends React.Component {
         let meals = [];
         this.props.days.forEach(day => {
             console.log(day)
-            meals.push(day.meals.breakfast.meal)
-            meals.push(day.meals.lunch.meal)
-            meals.push(day.meals.dinner.meal)
+            Object.entries(day.meals).map((meal) => {
+                if (!meal[1].disabled) {
+                    meals.push(meal[1].meal)
+                }
+            })
         });
         console.log(meals)
 
@@ -36,7 +38,7 @@ class ShoppingList extends React.Component {
                         let tmpValue = mapIngredients.get(ingredient.name)
                         mapIngredients.set(ingredient.name, { amount: (tmpValue.amount + ingredient.amount), unit: ingredient.unit })
                     } else {
-                        mapIngredients.set(ingredient.name, { amount: ingredient.amount, unit: ingredient.unit  })
+                        mapIngredients.set(ingredient.name, { amount: ingredient.amount, unit: ingredient.unit })
                     }
                 })
             }
@@ -48,11 +50,10 @@ class ShoppingList extends React.Component {
     }
 
     showIngredients() {
-        const ingredients = this.state.ingredients
         return (
             <ul>
-                {[...this.state.ingredients.keys()].map((ingredient) => (
-                    <li key={ingredient}>{this.state.ingredients.get(ingredient).amount} {this.state.ingredients.get(ingredient).unit} {ingredient}</li>
+                {[...this.state.ingredients.entries()].map(([k,v]) => (
+                    <li key={k}>{k} {v.amount} {v.unit}</li>
                 ))}
             </ul>
         );
