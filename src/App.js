@@ -81,11 +81,20 @@ class App extends React.Component {
     } else {
       return (
         <div className="container p-4">
-          <nav className="row">
-            <Menu units={this.state.units} changeUnits={this.changeUnits} toggleShow={this.toggleShow} showDays={this.state.showDays} showShoppingList={this.state.showShoppingList}></Menu>
-          </nav>
-          <Days units={this.state.units} show={this.state.showDays} saveDays={this.saveDays}></Days>
-          <ShoppingList units={this.state.units} show={this.state.showShoppingList} days={this.state.days}></ShoppingList>
+          <Menu
+            units={this.state.units}
+            changeUnits={this.changeUnits}
+            toggleShow={this.toggleShow}
+            showDays={this.state.showDays}
+            showShoppingList={this.state.showShoppingList} />
+          <Days
+            units={this.state.units}
+            show={this.state.showDays}
+            saveDays={this.saveDays} />
+          <ShoppingList
+            units={this.state.units}
+            show={this.state.showShoppingList}
+            days={this.state.days} />
         </div>
       );
     }

@@ -14,39 +14,35 @@ class Menu extends React.Component {
 
     render() {
         return (
-            <nav className="w-100">
-                <ul className="nav nav-tabs">
-                    <li className="nav-item">
+            <nav className="navbar navbar-light navbar-expand-md bg-light justify-content-between">
+                <ul className="navbar-nav">
+                    <li className="nav-item m-1">
                         <button
-                            className={this.props.showDays ? "nav-link active" : "nav-link"}
+                            className={this.props.showDays ? "btn btn-outline-secondary active" : "btn btn-outline-secondary"}
                             onClick={this.props.toggleShow}>
                             Meal-planner
                         </button>
                     </li>
-                    <li className="nav-item">
+                    <li className="nav-item m-1">
                         <button
-                            className={this.props.showShoppingList ? "nav-link active" : "nav-link"}
+                            className={this.props.showShoppingList ? "btn btn-outline-secondary active" : "btn btn-outline-secondary"}
                             onClick={this.props.toggleShow}>
                             Shopping-list
                         </button>
                     </li>
-                    <li className="nav-item ml-4 form-group row align-items-baseline">
-                        <div className="col-3">
-                            <label htmlFor="unitSelect">Units</label>
-                        </div>
-                        <div className="col">
-                            <select
-                                id="unitSelect"
-                                className="form-control form-control-sm"
-                                onChange={this.handleChangeUnits}
-                                value={this.props.units}>
-                                <option value="metric">Metric</option>
-                                <option value="us">US</option>
-                            </select>
-                        </div>
-                    </li>
                 </ul>
-            </nav>
+                <form className="form-inline">
+                    <label htmlFor="unitSelect" className="mr-2">Units</label>
+                    <select
+                        id="unitSelect"
+                        className="form-control form-control-sm"
+                        onChange={this.handleChangeUnits}
+                        value={this.props.units}>
+                        <option value="metric">Metric</option>
+                        <option value="us">US</option>
+                    </select>
+                </form>
+            </nav >
         );
     }
 } export default Menu;
