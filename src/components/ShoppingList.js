@@ -30,7 +30,7 @@ class ShoppingList extends React.Component {
         let mapIngredients = new Map();
 
         meals.forEach(meal => {
-            if (meal) {
+            if (meal != undefined && meal.extendedIngredients) {
                 meal.extendedIngredients.forEach(ingredient => {
                     if (mapIngredients.get(ingredient.name) !== undefined) {
                         let tmpValue = mapIngredients.get(ingredient.name)
