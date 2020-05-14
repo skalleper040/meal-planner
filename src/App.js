@@ -80,7 +80,7 @@ class App extends React.Component {
       );
     } else {
       return (
-        <div className="container p-4">
+        <div className="container-lg p-4">
           <Menu
             units={this.state.units}
             changeUnits={this.changeUnits}

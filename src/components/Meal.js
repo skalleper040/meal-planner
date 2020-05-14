@@ -56,9 +56,9 @@ class Meal extends React.Component {
         const disabled = this.state.disabled;
         if (disabled) {
             return (
-                <div className="flex-column bg-secondary w-100 p-0 m-0 rounded">
+                <div className="flex-column w-100 p-0 m-0 rounded">
                     <div className="p-2 m-0 btn-group w-100">
-                        <button className="btn btn-lg btn-outline-light" onClick={this.toggleSkip}>Eat</button>
+                        <button className="btn btn-lg btn-outline-secondary" onClick={this.toggleSkip}>Eat</button>
                     </div>
                 </div>
             );
