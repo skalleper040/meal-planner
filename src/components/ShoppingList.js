@@ -63,16 +63,16 @@ class ShoppingList extends React.Component {
         let groupedIngredients = this.state.ingredients;
         if (!_.isEmpty(groupedIngredients)) {
             return (
-                <div class="card-columns">
+                <div className="card-columns">
                     {Object.entries(groupedIngredients).map((group, ingredients) =>
-                        <div key={group} className="card shadow-sm">
+                        <article key={group} className="card shadow-sm">
                             <div className="card-header">
                                 {group[0]}
                             </div>
                             <div className="card-body">
                                 {this.props.units === 'metric' ? this.showMetricIngredients(group[1]) : this.showIngredients(group[1])}
                             </div>
-                        </div>)}
+                        </article>)}
                 </div>)
         } else {
             return (
@@ -119,13 +119,9 @@ class ShoppingList extends React.Component {
         if (show) {
             return (
                 <main className="row">
-                    <article className="col-12 p-4">
-                        {
-                            this.showIngredientCategories()
-                        /*
-                        this.props.units === 'metric' ? this.showMetricIngredients() : this.showIngredients()
-                        */}
-                    </article>
+                    <section className="col-12 p-4">
+                        {this.showIngredientCategories()}
+                    </section>
                 </main>
             );
         } else {
