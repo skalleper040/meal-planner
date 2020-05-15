@@ -23,10 +23,10 @@ class ShoppingList extends React.Component {
         }
     }
 
-    getIngredients() {
+    async getIngredients() {
         let meals = [];
         let ingredients = [];
-        this.props.days.forEach(day => {
+        await this.props.days.forEach(day => {
             Object.entries(day.meals).map((meal) => {
                 if (!meal[1].disabled) {
                     meals.push(meal[1].meal)
@@ -34,9 +34,9 @@ class ShoppingList extends React.Component {
             })
         });
 
-        meals.forEach(meal => {
+        meals.forEach(async meal => {
             if (meal !== undefined && meal.extendedIngredients) {
-                meal.extendedIngredients.forEach(ingredient => {
+                await meal.extendedIngredients.forEach(ingredient => {
                     let oldIngredient = ingredients.find(i => i.name === ingredient.name);
                     if (oldIngredient !== undefined) {
                         oldIngredient.amount += ingredient.amount;
@@ -48,6 +48,8 @@ class ShoppingList extends React.Component {
                 })
             }
         })
+
+        console.log(ingredients)
 
         const grouped = _.groupBy(ingredients, ingredient =>
             ingredient.aisle.substr(0, ingredient.aisle.indexOf(';') > 0 ?
@@ -61,10 +63,10 @@ class ShoppingList extends React.Component {
 
     showIngredientCategories() {
         let groupedIngredients = this.state.ingredients;
-        if (!_.isEmpty(groupedIngredients)) {
+        if (!_.isEmpty(this.state.ingredients)) {
             return (
                 <div className="card-columns">
-                    {Object.entries(groupedIngredients).map((group, ingredients) =>
+                    {Object.entries(this.state.ingredients).map((group, ingredients) =>
                         <article key={group} className="card shadow-sm">
                             <div className="card-header">
                                 {group[0]}
@@ -115,17 +117,12 @@ class ShoppingList extends React.Component {
     }
 
     render() {
-        const show = this.props.show;
-        if (show) {
-            return (
-                <main className="row">
-                    <section className="col-12 p-4">
-                        {this.showIngredientCategories()}
-                    </section>
-                </main>
-            );
-        } else {
-            return null;
-        }
+        return (
+            <main className="row">
+                <section className="col-12 p-4">
+                    {this.showIngredientCategories()}
+                </section>
+            </main>
+        );
     }
 } export default ShoppingList;

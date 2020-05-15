@@ -4,25 +4,28 @@ import Menu from './components/Menu';
 import Days from './components/Days';
 import ShoppingList from './components/ShoppingList';
 import { cacheRecipes } from './util/APIUtil'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
 
 import './App.css';
 
 import Recipes from './util/recipes.json'
+
 
 class App extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      showDays: true,
-      showShoppingList: false,
       days: [],
       isLoading: true,
       fetchError: false,
       units: 'metric'
     }
     this.saveDays = this.saveDays.bind(this);
-    this.toggleShow = this.toggleShow.bind(this);
     this.changeUnits = this.changeUnits.bind(this);
   }
 
@@ -53,14 +56,6 @@ class App extends React.Component {
     })
   }
 
-
-  toggleShow() {
-    this.setState({
-      showDays: !this.state.showDays,
-      showShoppingList: !this.state.showShoppingList
-    })
-  }
-
   saveRecipesToLs() {
     localStorage.setItem("breakfast-meals", JSON.stringify(Recipes))
     localStorage.setItem("lunch-meals", JSON.stringify(Recipes))
@@ -81,20 +76,28 @@ class App extends React.Component {
     } else {
       return (
         <div className="container-lg p-4">
-          <Menu
-            units={this.state.units}
-            changeUnits={this.changeUnits}
-            toggleShow={this.toggleShow}
-            showDays={this.state.showDays}
-            showShoppingList={this.state.showShoppingList} />
-          <Days
-            units={this.state.units}
-            show={this.state.showDays}
-            saveDays={this.saveDays} />
-          <ShoppingList
-            units={this.state.units}
-            show={this.state.showShoppingList}
-            days={this.state.days} />
+          <Router>
+            <Menu
+              units={this.state.units}
+              changeUnits={this.changeUnits} />
+            <Switch>
+              <Route render={() =>
+                <ShoppingList
+                  units={this.state.units}
+                  days={this.state.days}
+                />}
+                path="/shopping-list"
+              />
+              <Route render={() =>
+                <Days
+                  days={this.state.days}
+                  units={this.state.units}
+                  saveDays={this.saveDays}
+                />}
+                path="/"
+              />
+            </Switch>
+          </Router>
         </div>
       );
     }

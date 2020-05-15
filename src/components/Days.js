@@ -7,7 +7,7 @@ class Days extends React.Component {
         super(props);
         this.state = {
             counter: 0,
-            days: [],
+            days: this.props.days || []
         }
         this.addDay = this.addDay.bind(this);
         this.removeDay = this.removeDay.bind(this);
@@ -57,20 +57,15 @@ class Days extends React.Component {
     }
 
     render() {
-        const show = this.props.show;
-        if (show) {
-            return (
-                <main className="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 px-2 mt-4 justify-content-start">
-                    {this.createDays()}
-                    <article className="col">
-                        <div className="card">
-                            <button className="btn btn-secondary btn-lg btn-block" onClick={this.addDay}>Add day</button>
-                        </div>
-                    </article>
-                </main>
-            );
-        } else {
-            return null;
-        }
+        return (
+            <main className="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 px-2 mt-4 justify-content-start">
+                {this.createDays()}
+                <article className="col">
+                    <div className="card">
+                        <button className="btn btn-secondary btn-lg btn-block" onClick={this.addDay}>Add day</button>
+                    </div>
+                </article>
+            </main>
+        );
     }
 } export default Days;
