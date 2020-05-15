@@ -38,22 +38,22 @@ class Day extends React.Component {
 
     render() {
         return (
-            <div className="border p-0 m-0 rounded bg-light shadow-sm">
-                <div className="row justify-content-end no-gutters">
-                    <button type="button" className="close m-2" data-dismiss="modal" aria-label="Close" onClick={this.handleRemove}>
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+            <article className="col mb-4">
+                <div className="card h-100 shadow-sm">
+                    <div className="card-header">
+                        <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.handleRemove}>
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div className="card-body">
+                        <ul className="list-group list-group-flush">
+                            <Meal units={this.props.units} dishType="breakfast" saveMeal={this.saveMeal} meal={this.props.meals.breakfast}></Meal>
+                            <Meal units={this.props.units} dishType="lunch" saveMeal={this.saveMeal} meal={this.props.meals.lunch}></Meal>
+                            <Meal units={this.props.units} dishType="dinner" saveMeal={this.saveMeal} meal={this.props.meals.dinner}></Meal>
+                        </ul>
+                    </div>
                 </div>
-                <div className="row no-gutters border-top rounded">
-                    <Meal units={this.props.units} dishType="breakfast" saveMeal={this.saveMeal} meal={this.props.meals.breakfast}></Meal>
-                </div>
-                <div className="row no-gutters border-top rounded">
-                    <Meal units={this.props.units} dishType="lunch" saveMeal={this.saveMeal} meal={this.props.meals.lunch}></Meal>
-                </div>
-                <div className="row no-gutters border-top rounded">
-                    <Meal units={this.props.units} dishType="dinner" saveMeal={this.saveMeal} meal={this.props.meals.dinner}></Meal>
-                </div>
-            </div>
+            </article>
         );
     }
 

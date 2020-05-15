@@ -56,25 +56,21 @@ class Meal extends React.Component {
         const disabled = this.state.disabled;
         if (disabled) {
             return (
-                <div className="flex-column w-100 p-0 m-0 rounded">
-                    <div className="p-2 m-0 btn-group w-100">
-                        <button className="btn btn-lg btn-outline-secondary" onClick={this.toggleSkip}>Eat</button>
-                    </div>
-                </div>
+                <li className="list-group-item p-4">
+                    <button className="btn btn-lg btn-outline-secondary w-100" onClick={this.toggleSkip}>Eat</button>
+                </li>
             );
         } else {
             return (
-                <div className="flex-column w-100 p-0 m-0 rounded">
+                <li className="list-group-item p-4">
                     <Recipe units={this.props.units} show={this.state.showRecipe} handleShow={this.showRecipe} meal={this.state.meal}></Recipe>
-                    <div className="p-4 m-0 text-center">
-                        <h6>{this.state.meal.title}</h6>
-                    </div>
-                    <div className="p-2 m-0 btn-group w-100">
+                    <h6 className="text-center my-2">{this.state.meal.title}</h6>
+                    <div className="btn-group w-100 my-2">
                         <button className="btn btn-sm btn-dark" onClick={this.toggleSkip}>Skip</button>
                         <button className="btn btn-sm btn-info" onClick={this.showRecipe}>Recipe</button>
                         <button className="btn btn-sm btn-success" onClick={this.getRandomRecipe}>Hit</button>
                     </div>
-                </div>
+                </li>
             );
         }
     }

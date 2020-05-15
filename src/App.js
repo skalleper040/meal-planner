@@ -70,7 +70,7 @@ class App extends React.Component {
   render() {
     if (this.state.isLoading) {
       return (
-        <div className="container p-4 bg-light">
+        <div className="container p-4">
           <div className="d-flex justify-content-center">
             <div className="spinner-border" role="status">
               <span className="sr-only">Loading...</span>

@@ -1,7 +1,7 @@
-const BREAKFASTURL = 'https://api.spoonacular.com/recipes/random?number=10&tags=breakfast';
-const LUNCHURL = 'https://api.spoonacular.com/recipes/random?number=10&tags=lunch';
-const DINNERURL ='https://api.spoonacular.com/recipes/random?number=10&tags=dinner';
-const apiKey = '';
+const BREAKFASTURL = 'https://api.spoonacular.com/recipes/random?number=100&tags=breakfast';
+const LUNCHURL = 'https://api.spoonacular.com/recipes/random?number=100&tags=lunch';
+const DINNERURL ='https://api.spoonacular.com/recipes/random?number=100&tags=dinner';
+const apiKey = '&apiKey=17cd8297fde84a3abfecf98b5fdf1566';
 
 export async function cacheRecipes() {
     if(!localStorage.getItem("breakfast-meals")){

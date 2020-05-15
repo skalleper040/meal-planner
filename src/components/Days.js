@@ -52,9 +52,7 @@ class Days extends React.Component {
 
     createDays() {
         return this.state.days.map((day) =>
-            <article className="col-12 col-md-4 mb-4" key={day.id}>
-                <Day units={this.props.units} id={day.id} removeDay={this.removeDay} saveDay={this.saveDay} meals={day.meals}></Day>
-            </article>
+            <Day key={day.id} units={this.props.units} id={day.id} removeDay={this.removeDay} saveDay={this.saveDay} meals={day.meals}></Day>
         );
     }
 
@@ -62,10 +60,12 @@ class Days extends React.Component {
         const show = this.props.show;
         if (show) {
             return (
-                <main className="row p-2 mt-3 justify-content-start">
+                <main className="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 px-2 mt-4 justify-content-start">
                     {this.createDays()}
-                    <article className="col-12 col-md-4 p-4">
-                        <button className="btn btn-secondary btn-lg btn-block" onClick={this.addDay}>Add day</button>
+                    <article className="col">
+                        <div className="card">
+                            <button className="btn btn-secondary btn-lg btn-block" onClick={this.addDay}>Add day</button>
+                        </div>
                     </article>
                 </main>
             );
