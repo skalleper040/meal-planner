@@ -3,7 +3,7 @@ import React from 'react';
 import Menu from './components/Menu';
 import Days from './components/Days';
 import ShoppingList from './components/ShoppingList';
-import { cacheRecipes } from './util/APIUtil'
+import { cacheMeal } from './util/APIUtil'
 import {
   BrowserRouter as Router,
   Switch,
@@ -11,9 +11,6 @@ import {
 } from "react-router-dom";
 
 import './App.css';
-
-import Recipes from './util/recipes.json'
-
 
 class App extends React.Component {
 
@@ -23,25 +20,35 @@ class App extends React.Component {
       days: [],
       isLoading: true,
       fetchError: false,
-      units: 'metric'
+      units: 'metric',
+      progress: 10
     }
     this.saveDays = this.saveDays.bind(this);
     this.changeUnits = this.changeUnits.bind(this);
   }
 
   async componentDidMount() {
-    await cacheRecipes()
-      .then(result => {
-        if (!result) {
+    let dishTypes = ['breakfast', 'lunch', 'dinner'];
+
+    for (let i = 0; i < dishTypes.length; i++) {
+      await cacheMeal(dishTypes[i])
+        .then(result => {
+          if (!result) {
+            this.setState({
+              fetchError: true,
+              isLoading: false
+            })
+            return
+          }
           this.setState({
-            fetchError: true
+            progress: this.state.progress + 28
           })
-        } else {
-          this.setState({
-            isLoading: false
-          })
-        }
-      })
+        })
+    }
+
+    this.setState({
+      isLoading: false
+    })
   }
 
   changeUnits(units) {
@@ -56,21 +63,24 @@ class App extends React.Component {
     })
   }
 
-  saveRecipesToLs() {
-    localStorage.setItem("breakfast-meals", JSON.stringify(Recipes))
-    localStorage.setItem("lunch-meals", JSON.stringify(Recipes))
-    localStorage.setItem("dinner-meals", JSON.stringify(Recipes))
-  }
-
   render() {
+    const progress = this.state.progress;
+    console.log(progress);
     if (this.state.isLoading) {
+
       return (
         <div className="container p-4">
-          <div className="d-flex justify-content-center">
-            <div className="spinner-border" role="status">
-              <span className="sr-only">Loading...</span>
+          <div className="d-flex w-100 bg-light rounded">
+            <div className="progress bg-dark">
+              <div className="progress-bar progress-bar-animated progress-bar-striped bg-danger" role="progressbar" style={ {width: this.state.progress + 'vw'}} aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
           </div>
+        </div>
+      );
+    } else if (this.state.fetchError) {
+      return (
+        <div className="alert alert-danger">
+          <strong>Error!</strong> A problem has been occurred while fetching data.
         </div>
       );
     } else {
@@ -83,7 +93,7 @@ class App extends React.Component {
             <Switch>
               <Route render={() =>
                 <ShoppingList
-                  units={this.state.units}
+                  units={this.state.units} d
                   days={this.state.days}
                 />}
                 path="/shopping-list"

@@ -12,6 +12,9 @@ class ShoppingList extends React.Component {
         this.getIngredients = this.getIngredients.bind(this);
     }
 
+    componentDidMount() {
+        this.getIngredients();
+    }
     componentDidUpdate(prevProps, prevState) {
         if (prevProps !== this.props) {
             if (prevProps.units !== this.props.units) {
@@ -24,45 +27,66 @@ class ShoppingList extends React.Component {
     }
 
     async getIngredients() {
+        let meals = this.produceMeals();
+        let ingredients = this.produceIngredients(meals);
+        let groups = this.produceGroups(ingredients);
+        console.log(JSON.parse(JSON.stringify(meals)));
+        console.log(JSON.parse(JSON.stringify(ingredients)))
+        console.log(JSON.parse(JSON.stringify(groups)));
+        this.setState({
+            ingredients: groups
+        })
+
+    }
+
+    produceMeals() {
+        const days = JSON.parse(JSON.stringify(this.props.days));
         let meals = [];
-        let ingredients = [];
-        await this.props.days.forEach(day => {
+
+        days.forEach(day => {
             Object.entries(day.meals).map((meal) => {
                 if (!meal[1].disabled) {
                     meals.push(meal[1].meal)
                 }
             })
         });
+        return meals;
+    }
 
-        meals.forEach(async meal => {
-            if (meal !== undefined && meal.extendedIngredients) {
-                await meal.extendedIngredients.forEach(ingredient => {
-                    let oldIngredient = ingredients.find(i => i.name === ingredient.name);
-                    if (oldIngredient !== undefined) {
-                        oldIngredient.amount += ingredient.amount;
-                        oldIngredient.measures.metric.amount += ingredient.measures.metric.amount;
-                        oldIngredient.measures.us.amount += ingredient.measures.us.amount;
+    produceIngredients(meals) {
+        let ingredients = [];
+
+        meals.forEach(meal => {
+            if (!_.isUndefined(meal) && !_.isUndefined(meal.extendedIngredients)) {
+                meal.extendedIngredients.forEach(ingredient => {
+                    let existingIngredient = ingredients.find(i => i.id === ingredient.id)
+                    if (!_.isUndefined(existingIngredient)) {
+                        existingIngredient.amount += ingredient.amount;
+                        existingIngredient.measures.metric.amount += ingredient.measures.metric.amount;
+                        existingIngredient.measures.us.amount += ingredient.measures.us.amount;
                     } else {
-                        ingredients.push(ingredient)
+                        ingredients.push(ingredient);
                     }
                 })
             }
         })
+        return ingredients;
+    }
 
-        console.log(ingredients)
-
-        const grouped = _.groupBy(ingredients, ingredient =>
-            ingredient.aisle.substr(0, ingredient.aisle.indexOf(';') > 0 ?
-                ingredient.aisle.indexOf(';') : ingredient.aisle.length));
-
-        this.setState({
-            ingredients: grouped
-        })
-
+    produceGroups(ingredients) {
+        return _.groupBy(ingredients, function (ingredient) {
+            let group;
+            if (!_.isNull(ingredient.aisle)) {
+                group = ingredient.aisle.substr(0, ingredient.aisle.indexOf(';') > 0 ?
+                    ingredient.aisle.indexOf(';') : ingredient.aisle.length);
+            } else {
+                group = '?'
+            }
+            return group;
+        });
     }
 
     showIngredientCategories() {
-        let groupedIngredients = this.state.ingredients;
         if (!_.isEmpty(this.state.ingredients)) {
             return (
                 <div className="card-columns">

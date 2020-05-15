@@ -52,7 +52,7 @@ class Days extends React.Component {
 
     createDays() {
         return this.state.days.map((day) =>
-            <Day key={day.id} units={this.props.units} id={day.id} removeDay={this.removeDay} saveDay={this.saveDay} meals={day.meals}></Day>
+            <Day key={'day' + day.id} units={this.props.units} id={day.id} removeDay={this.removeDay} saveDay={this.saveDay} meals={day.meals}></Day>
         );
     }
 

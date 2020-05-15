@@ -1,43 +1,32 @@
-const BREAKFASTURL = 'https://api.spoonacular.com/recipes/random?number=100&tags=breakfast';
-const LUNCHURL = 'https://api.spoonacular.com/recipes/random?number=100&tags=lunch';
-const DINNERURL ='https://api.spoonacular.com/recipes/random?number=100&tags=dinner';
+import _ from 'underscore';
+
+const BASEURL = 'https://api.spoonacular.com/recipes/random?number=10&tags=';
+
 const apiKey = '&apiKey=17cd8297fde84a3abfecf98b5fdf1566';
 
-export async function cacheRecipes() {
-    if(!localStorage.getItem("breakfast-meals")){
-        console.log("fecthing breakfast");
-        let breakfast = await fetchRecipes(BREAKFASTURL).catch(error =>{
-            return false;
+export async function cacheMeal(dishType){
+    let result = true;
+    if (!localStorage.getItem(dishType+"-meals")) {
+        let dish = await fetchRecipes(BASEURL+dishType).catch(error => {
+            console.log(error);
+            result = false;
         });
-        localStorage.setItem("breakfast-meals", JSON.stringify(breakfast));
-    }
-    
-    if(!localStorage.getItem("lunch-meals")){
-        console.log("fecthing lunch");
-        let lunch = await fetchRecipes(LUNCHURL).catch(error =>{
-            return false;
-        });
-        localStorage.setItem("lunch-meals", JSON.stringify(lunch));
-    }
 
-    if(!localStorage.getItem("dinner-meals")){
-        console.log("fecthing dinner");
-        let dinner = await fetchRecipes(DINNERURL).catch(error => {
-             return false;
-        });
-        localStorage.setItem("dinner-meals", JSON.stringify(dinner));
+        if (!_.isUndefined(dish)) {
+            localStorage.setItem(dishType+"-meals", JSON.stringify(dish));
+        }
     }
-
-    return true;
+    return result;
 }
-function handleError(response){
-    if(!response.ok) throw new Error(response.statusText);
+
+function handleError(response) {
+    if (!response.ok) throw new Error(response.statusText);
     return response;
 }
 
-async function fetchRecipes(url){
-    let response = await(fetch(url+apiKey)).then(handleError);
-    let data = await(response.json());
+async function fetchRecipes(url) {
+    let response = await (fetch(url + apiKey)).then(handleError);
+    let data = await (response.json());
     return data.recipes;
 }
 
