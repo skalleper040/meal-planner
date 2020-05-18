@@ -45,8 +45,9 @@ class ShoppingList extends React.Component {
 
         days.forEach(day => {
             Object.entries(day.meals).map((meal) => {
+                console.log(meal)
                 if (!meal[1].disabled) {
-                    meals.push(meal[1].meal)
+                    meals.push(meal[1].recipe)
                 }
             })
         });
