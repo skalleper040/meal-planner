@@ -31,6 +31,9 @@ class ShoppingList extends React.Component {
     async getIngredients() {
         let meals = this.produceMeals();
         let ingredients = this.produceIngredients(meals);
+        ingredients.sort(function (a, b) {
+            return (a.name > b.name) ? 1 : (b.name > a.name ? -1 : 0);
+        });
         let groups = this.produceGroups(ingredients);
         this.setState({
             ingredients: groups
@@ -91,7 +94,7 @@ class ShoppingList extends React.Component {
                 <section className="col-12 p-4">
                     {!_.isEmpty(this.state.ingredients) ? (
                         <div className="card-columns">
-                            {Object.entries(this.state.ingredients).map((group) =>
+                            {Object.entries(this.state.ingredients).sort().map((group) =>
                                 <IngredientGroup key={group[0]} group={group} units={this.props.units} />
                             )}
                         </div>
