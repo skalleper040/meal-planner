@@ -1,14 +1,32 @@
 import React from 'react';
 
-function Ingredient(props) {
-    const amount = (props.units === 'metric' ? props.ingredient.measures.metric.amount : props.ingredient.measures.us.amount)
-    const unit = (props.units === 'metric' ? props.ingredient.measures.metric.unitShort : props.ingredient.measures.us.unitShort)
+class Ingredient extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            active: false
+        }
+        this.handleClick = this.handleClick.bind(this);
+    }
 
-    return (
-        <li
-            className="list-group-item"
-            key={props.ingredient.name}>
-            {amount} {unit} {props.ingredient.name}
-        </li>
-    );
+    handleClick() {
+        this.setState({
+            active: !this.state.active
+        })
+    }
+
+    render() {
+        const amount = (this.props.units === 'metric' ? this.props.ingredient.measures.metric.amount : this.props.ingredient.measures.us.amount)
+        const unit = (this.props.units === 'metric' ? this.props.ingredient.measures.metric.unitShort : this.props.ingredient.measures.us.unitShort)
+
+        return (
+            <button
+                className={"list-group-item list-group-item-action " + (this.state.active ? "list-group-item-secondary" : "")}
+                key={this.props.ingredient.name}
+                onClick={this.handleClick}
+                >
+                {amount} {unit} {this.props.ingredient.name}
+            </button>
+        );
+    }
 } export default Ingredient;
