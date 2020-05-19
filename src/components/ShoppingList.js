@@ -1,5 +1,6 @@
 import React from 'react';
 import _ from 'underscore';
+import IngredientGroup from './IngredientGroup';
 
 class ShoppingList extends React.Component {
 
@@ -15,6 +16,7 @@ class ShoppingList extends React.Component {
     componentDidMount() {
         this.getIngredients();
     }
+
     componentDidUpdate(prevProps, prevState) {
         if (prevProps !== this.props) {
             if (prevProps.units !== this.props.units) {
@@ -30,9 +32,6 @@ class ShoppingList extends React.Component {
         let meals = this.produceMeals();
         let ingredients = this.produceIngredients(meals);
         let groups = this.produceGroups(ingredients);
-        console.log(JSON.parse(JSON.stringify(meals)));
-        console.log(JSON.parse(JSON.stringify(ingredients)))
-        console.log(JSON.parse(JSON.stringify(groups)));
         this.setState({
             ingredients: groups
         })
@@ -45,7 +44,6 @@ class ShoppingList extends React.Component {
 
         days.forEach(day => {
             Object.entries(day.meals).map((meal) => {
-                console.log(meal)
                 if (!meal[1].disabled) {
                     meals.push(meal[1].recipe)
                 }
@@ -87,65 +85,22 @@ class ShoppingList extends React.Component {
         });
     }
 
-    showIngredientCategories() {
-        if (!_.isEmpty(this.state.ingredients)) {
-            return (
-                <div className="card-columns">
-                    {Object.entries(this.state.ingredients).map((group, ingredients) =>
-                        <article key={group} className="card shadow-sm">
-                            <div className="card-header">
-                                {group[0]}
-                            </div>
-                            <div className="card-body">
-                                {this.props.units === 'metric' ? this.showMetricIngredients(group[1]) : this.showIngredients(group[1])}
-                            </div>
-                        </article>)}
-                </div>)
-        } else {
-            return (
-                <div className="alert alert-primary" role="alert">
-                    Nothing to shop!
-                </div>
-            )
-        }
-    }
-
-
-    showMetricIngredients(ingredients) {
-        return (
-            <ul className="list-group list-group-flush">
-                {ingredients.map(ingredient => (
-                    <li
-                        className="list-group-item"
-                        key={ingredient.name}>
-                        {ingredient.measures.metric.amount} {ingredient.measures.metric.unitShort} {ingredient.name}
-                    </li>
-                ))
-                }
-            </ul>
-        );
-    }
-
-    showIngredients(ingredients) {
-        return (
-            <ul className="list-group list-group-flush">
-                {ingredients.map(ingredient => (
-                    <li
-                        className="list-group-item"
-                        key={ingredient.name}>
-                        {ingredient.amount} {ingredient.unit} {ingredient.name}
-                    </li>
-                ))
-                }
-            </ul>
-        );
-    }
-
     render() {
         return (
             <main className="row">
                 <section className="col-12 p-4">
-                    {this.showIngredientCategories()}
+                    {!_.isEmpty(this.state.ingredients) ? (
+                        <div className="card-columns">
+                            {Object.entries(this.state.ingredients).map((group) =>
+                                <IngredientGroup key={group[0]} group={group} units={this.props.units} />
+                            )}
+                        </div>
+                    ) : (
+                            <div className="alert alert-primary" role="alert">
+                                Nothing to shop!
+                            </div>
+                        )
+                    }
                 </section>
             </main>
         );
