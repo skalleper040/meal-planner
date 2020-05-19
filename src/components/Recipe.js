@@ -7,7 +7,7 @@ class Recipe extends React.Component {
         if (this.props.units === 'metric') {
             return (
                 <ul className="list-group list-group-flush">
-                    {this.props.meal.extendedIngredients.map((ingredient, i) => (
+                    {this.props.meal.recipe.extendedIngredients.map((ingredient, i) => (
                         <li className="list-group-item" key={i}>{ingredient.measures.metric.amount}{ingredient.measures.metric.unitShort} {ingredient.name}</li>
                     ))}
                 </ul>
@@ -15,7 +15,7 @@ class Recipe extends React.Component {
         } else {
             return (
                 <ul className="list-group list-group-flush">
-                    {this.props.meal.extendedIngredients.map((ingredient, i) => (
+                    {this.props.meal.recipe.extendedIngredients.map((ingredient, i) => (
                         <li className="list-group-item" key={i}>{ingredient.measures.us.amount}{ingredient.measures.us.unitShort} {ingredient.name}</li>
                     ))}
                 </ul>
@@ -26,7 +26,7 @@ class Recipe extends React.Component {
     createInstructions = () => {
         return (
             <ol className="list-group list-group-flush">
-                {this.props.meal.analyzedInstructions[0].steps.map((instruction, i) => (
+                {this.props.meal.recipe.analyzedInstructions[0].steps.map((instruction, i) => (
                     <li className="list-group-item" key={i}>{instruction.step}</li>
                 ))}
             </ol>
@@ -41,7 +41,7 @@ class Recipe extends React.Component {
                     <div className="modal-dialog modal-xl shadow-lg" role="document">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h5 className="modal-title">{this.props.meal.title}</h5>
+                                <h5 className="modal-title">{this.props.meal.recipe.title}</h5>
                                 <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.props.handleShow}>
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -51,20 +51,20 @@ class Recipe extends React.Component {
                                 <div className="container-fluid">
                                     <div className="row mb-2">
                                         <span className="badge badge-primary m-1">
-                                            <i className="fa fa-clock-o"></i> {this.props.meal.readyInMinutes}
+                                            <i className="fa fa-clock-o"></i> {this.props.meal.recipe.readyInMinutes}
                                         </span>
                                         <span className="badge badge-primary m-1">
-                                            <i className="fa fa-cutlery"></i> {this.props.meal.servings}
+                                            <i className="fa fa-cutlery"></i> {this.props.meal.recipe.servings}
                                         </span>
-                                        {this.props.meal.vegetarian &&
+                                        {this.props.meal.recipe.vegetarian &&
                                             <span className="badge badge-success m-1">
                                                 Vegetarian
                                             </span>}
-                                        {this.props.meal.vegan &&
+                                        {this.props.meal.recipe.vegan &&
                                             <span className="badge badge-success m-1">
                                                 Vegan
                                             </span>}
-                                        {this.props.meal.glutenFree &&
+                                        {this.props.meal.recipe.glutenFree &&
                                             <span className="badge badge-success m-1">
                                                 Gluten free
                                             </span>}
