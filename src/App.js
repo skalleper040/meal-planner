@@ -12,6 +12,8 @@ import {
 
 import './App.css';
 
+const dishTypes = ['breakfast', 'lunch', 'dinner'];
+
 class App extends React.Component {
 
   constructor(props) {
@@ -24,15 +26,9 @@ class App extends React.Component {
       progress: 10,
       counter: 1
     }
-    this.changeUnits = this.changeUnits.bind(this);
-    this.addDay = this.addDay.bind(this);
-    this.removeDay = this.removeDay.bind(this);
-    this.generateMeal = this.generateMeal.bind(this);
-    this.skipMeal = this.skipMeal.bind(this);
   }
 
   async componentDidMount() {
-    let dishTypes = ['breakfast', 'lunch', 'dinner'];
 
     for (let i = 0; i < dishTypes.length; i++) {
       await cacheMeal(dishTypes[i])
@@ -55,13 +51,13 @@ class App extends React.Component {
     })
   }
 
-  changeUnits(units) {
+  changeUnits = (units) => {
     this.setState({
       units: units
     })
   }
 
-  addDay() {
+  addDay = () => {
     var day = {
       meals: {
         breakfast: {
@@ -75,7 +71,7 @@ class App extends React.Component {
         dinner: {
           recipe: this.getRandomRecipe("dinner"),
           disabled: false
-        } 
+        }
       },
       id: this.state.counter
     }
@@ -85,7 +81,7 @@ class App extends React.Component {
     })
   }
 
-  removeDay(id) {
+  removeDay = (id) => {
     var tempDays = this.state.days;
     var index = tempDays.findIndex(day => day.id === id);
     if (index !== -1) {
@@ -100,7 +96,7 @@ class App extends React.Component {
     return recipe;
   }
 
-  generateMeal(dayId, dishType) {
+  generateMeal = (dayId, dishType) => {
     let days = [...this.state.days];
     var index = days.findIndex(day => day.id === dayId);
     let recipe = this.getRandomRecipe(dishType);
@@ -116,7 +112,7 @@ class App extends React.Component {
     })
   }
 
-  skipMeal(dayId, dishType) {
+  skipMeal = (dayId, dishType) => {
     let days = [...this.state.days];
     var index = days.findIndex(day => day.id === dayId);
     days[index].meals = {
