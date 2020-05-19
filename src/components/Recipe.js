@@ -1,93 +1,78 @@
 import React from 'react';
+import Ingredient from './Ingredient';
+import RecipeBadge from './RecipeBadge';
+import RecipeInstruction from './RecipeInstruction'
 import '../App.css';
 
 class Recipe extends React.Component {
-
-    createIngredients = () => {
-        if (this.props.units === 'metric') {
-            return (
-                <ul className="list-group list-group-flush">
-                    {this.props.meal.recipe.extendedIngredients.map((ingredient, i) => (
-                        <li className="list-group-item" key={i}>{ingredient.measures.metric.amount}{ingredient.measures.metric.unitShort} {ingredient.name}</li>
-                    ))}
-                </ul>
-            );
-        } else {
-            return (
-                <ul className="list-group list-group-flush">
-                    {this.props.meal.recipe.extendedIngredients.map((ingredient, i) => (
-                        <li className="list-group-item" key={i}>{ingredient.measures.us.amount}{ingredient.measures.us.unitShort} {ingredient.name}</li>
-                    ))}
-                </ul>
-            );
-        }
-    }
-
-    createInstructions = () => {
-        return (
-            <ol className="list-group list-group-flush">
-                {this.props.meal.recipe.analyzedInstructions[0].steps.map((instruction, i) => (
-                    <li className="list-group-item" key={i}>{instruction.step}</li>
-                ))}
-            </ol>
-        );
-    }
-
     render() {
-        const show = this.props.show;
-        if (show) {
-            return (
-                <div className="modal d-block" tabIndex="-1" role="dialog">
-                    <div className="modal-dialog modal-xl shadow-lg" role="document">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h5 className="modal-title">{this.props.meal.recipe.title}</h5>
-                                <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.props.handleShow}>
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+        const meal = this.props.location.state.meal
+        const units = this.props.location.state.units
+        return (
+            <div className="modal d-block" tabIndex="-1" role="dialog">
+                <div className="modal-dialog modal-xl shadow-lg" role="document">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title">{meal.title}</h5>
+                            <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.props.history.goBack}>
+                                <span aria-hidden="true">&times;</span>
+                            </button>
 
-                            </div>
-                            <div className="modal-body">
-                                <div className="container-fluid">
-                                    <div className="row mb-2">
-                                        <span className="badge badge-primary m-1">
-                                            <i className="fa fa-clock-o"></i> {this.props.meal.recipe.readyInMinutes}
-                                        </span>
-                                        <span className="badge badge-primary m-1">
-                                            <i className="fa fa-cutlery"></i> {this.props.meal.recipe.servings}
-                                        </span>
-                                        {this.props.meal.recipe.vegetarian &&
-                                            <span className="badge badge-success m-1">
-                                                Vegetarian
-                                            </span>}
-                                        {this.props.meal.recipe.vegan &&
-                                            <span className="badge badge-success m-1">
-                                                Vegan
-                                            </span>}
-                                        {this.props.meal.recipe.glutenFree &&
-                                            <span className="badge badge-success m-1">
-                                                Gluten free
-                                            </span>}
+                        </div>
+                        <div className="modal-body">
+                            <div className="container-fluid">
+                                <div className="row mb-2">
+                                    <RecipeBadge
+                                        title={meal.readyInMinutes}
+                                        value={meal.readyInMinutes}
+                                        icon="fa fa-clock-o"
+                                        color="blue"
+                                    />
+                                    <RecipeBadge
+                                        title={meal.servings}
+                                        value={meal.servings}
+                                        icon="fa fa-cutlery"
+                                        color="blue"
+                                    />
+                                    <RecipeBadge
+                                        title="Vegetarian"
+                                        value={meal.vegetarian}
+                                        color="green"
+                                    />
+                                    <RecipeBadge
+                                        title="Vegan"
+                                        value={meal.vegan}
+                                        color="green"
+                                    />
+                                    <RecipeBadge
+                                        title="Gluten free"
+                                        value={meal.glutenFree}
+                                        color="green"
+                                    />
+                                </div>
+                                <div className="row">
+                                    <div className="col-lg-4 col-sm-12">
+                                        <h6>Ingredients</h6>
+                                        <ul className="list-group list-group-flush">
+                                            {meal.extendedIngredients.map((ingredient, i) => (
+                                                <Ingredient key={ingredient.name} ingredient={ingredient} units={units} />
+                                            ))}
+                                        </ul>
                                     </div>
-                                    <div className="row">
-                                        <div className="col-lg-4 col-sm-12">
-                                            <h6>Ingredients</h6>
-                                            {this.createIngredients()}
-                                        </div>
-                                        <div className="col-lg-8 col-sm-12">
-                                            <h6>Instructions</h6>
-                                            {this.createInstructions()}
-                                        </div>
+                                    <div className="col-lg-8 col-sm-12">
+                                        <h6>Instructions</h6>
+                                        <ol className="list-group list-group-flush">
+                                            {meal.analyzedInstructions[0].steps.map((instruction, i) => (
+                                                <RecipeInstruction key={i} i={i} step={instruction.step}/>
+                                            ))}
+                                        </ol>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            );
-        } else {
-            return null;
-        }
+            </div>
+        );
     }
-
 } export default Recipe;

@@ -1,5 +1,4 @@
 import React from 'react';
-import Meal from './Meal';
 
 class Day extends React.Component {
     render() {
@@ -21,26 +20,7 @@ class Day extends React.Component {
                     </div>
                     <div className="card-body">
                         <ul className="list-group list-group-flush">
-                            <Meal
-                                units={this.props.units}
-                                dishType="breakfast"
-                                meal={this.props.meals.breakfast}
-                                generateMeal={(dayId, dishType) => this.props.generateMeal(dayId, dishType)}
-                                skipMeal={(dayId, dishType) => this.props.skipMeal(dayId, dishType)}
-                                id={this.props.id} />
-                            <Meal units={this.props.units}
-                                dishType="lunch"
-                                meal={this.props.meals.lunch}
-                                generateMeal={(dayId, dishType) => this.props.generateMeal(dayId, dishType)}
-                                skipMeal={(dayId, dishType) => this.props.skipMeal(dayId, dishType)}
-                                id={this.props.id} />
-                            <Meal
-                                units={this.props.units}
-                                dishType="dinner"
-                                meal={this.props.meals.dinner}
-                                generateMeal={(dayId, dishType) => this.props.generateMeal(dayId, dishType)}
-                                skipMeal={(dayId, dishType) => this.props.skipMeal(dayId, dishType)}
-                                id={this.props.id} />
+                        {this.props.children}
                         </ul>
                     </div>
                 </div>

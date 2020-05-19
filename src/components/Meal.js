@@ -1,34 +1,9 @@
 import React from 'react';
-import Recipe from './Recipe';
+import { Link } from "react-router-dom";
 
 class Meal extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            showRecipe: false
-        }
-
-        this.showRecipe = this.showRecipe.bind(this);
-        this.toggleSkip = this.toggleSkip.bind(this);
-    }
-
-
-    toggleSkip() {
-        let disabled = this.state.disabled;
-        this.setState({
-            disabled: !disabled
-        })
-    }
-
-    showRecipe() {
-        this.setState({
-            showRecipe: !this.state.showRecipe
-        })
-    }
-
     render() {
-        const disabled = this.props.meal.disabled;
+        const disabled = this.props.meal[1].disabled;
         if (disabled) {
             return (
                 <li className="list-group-item p-4">
@@ -41,14 +16,10 @@ class Meal extends React.Component {
             );
         } else {
             return (
+
                 <li className="list-group-item p-4">
-                    <Recipe
-                        units={this.props.units}
-                        show={this.state.showRecipe}
-                        handleShow={this.showRecipe}
-                        meal={this.props.meal} />
                     <h6 className="text-center my-2">
-                        {this.props.meal.recipe.title}
+                        {this.props.meal[1].recipe.title}
                     </h6>
                     <div className="btn-group w-100 my-2">
                         <button
@@ -56,11 +27,17 @@ class Meal extends React.Component {
                             onClick={() => this.props.skipMeal(this.props.id, this.props.dishType)}>
                             Skip
                             </button>
-                        <button
+                        <Link
                             className="btn btn-sm btn-info"
-                            onClick={this.showRecipe}>
+                            to={{
+                                pathname: '/recipe/',
+                                state: {
+                                    meal: this.props.meal[1].recipe,
+                                    units: this.props.units
+                                }
+                            }}>
                             Recipe
-                            </button>
+                            </Link>
                         <button
                             className="btn btn-sm btn-success"
                             onClick={() => this.props.generateMeal(this.props.id, this.props.dishType)}>

@@ -2,6 +2,9 @@ import React from 'react';
 
 import Menu from './components/Menu';
 import Days from './components/Days';
+import Day from './components/Day';
+import Meal from './components/Meal';
+import Recipe from './components/Recipe';
 import ShoppingList from './components/ShoppingList';
 import { cacheMeal } from './util/APIUtil'
 import {
@@ -115,6 +118,7 @@ class App extends React.Component {
   skipMeal = (dayId, dishType) => {
     let days = [...this.state.days];
     var index = days.findIndex(day => day.id === dayId);
+    console.log(days[index].meals)
     days[index].meals = {
       ...days[index].meals,
       [dishType]: {
@@ -129,7 +133,6 @@ class App extends React.Component {
 
   render() {
     if (this.state.isLoading) {
-
       return (
         <div className="container p-4">
           <div className="d-flex w-100 bg-light rounded">
@@ -153,6 +156,8 @@ class App extends React.Component {
               units={this.state.units}
               changeUnits={this.changeUnits} />
             <Switch>
+              <Route component={Recipe}
+                path="/recipe/" />
               <Route render={() =>
                 <ShoppingList
                   units={this.state.units}
@@ -163,12 +168,26 @@ class App extends React.Component {
               <Route render={() =>
                 <Days
                   days={this.state.days}
-                  units={this.state.units}
-                  removeDay={this.removeDay}
-                  addDay={this.addDay}
-                  generateMeal={this.generateMeal}
-                  skipMeal={this.skipMeal}
-                />}
+                  addDay={this.addDay}>
+                  {this.state.days.map((day) =>
+                    <Day
+                      key={'day' + day.id}
+                      id={day.id}
+                      removeDay={(id) => this.removeDay(id)}
+                      >
+                      {Object.entries(day.meals).map((meal) =>
+                        <Meal
+                          key={day.id + meal[0]}
+                          dishType={meal[0]}
+                          meal={meal}
+                          generateMeal={(dayId, dishType) => this.generateMeal(dayId, dishType)}
+                          skipMeal={(dayId, dishType) => this.skipMeal(dayId, dishType)}
+                          id={day.id}
+                          units={this.state.units}>
+                        </Meal>
+                      )}
+                    </Day>)}
+                </Days>}
                 path="/"
               />
             </Switch>
