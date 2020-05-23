@@ -1,5 +1,4 @@
 import _ from 'underscore';
-import { isCompositeComponent } from 'react-dom/test-utils';
 
 export function convertSingleIngredientMeasureUnits(ingredient) {
     let result = JSON.parse(JSON.stringify(ingredient)); //deep clone of ingredient.
@@ -19,8 +18,12 @@ export function convertIngredientListMeasureUnits(ingredients){
 export function convertIngredientsIgnoreSpoons(ingredients){
     let convertedIngredients = [];
     ingredients.forEach(ingredient =>{
+        console.log(ingredient.measures.metric.unitShort);
+        console.log(isSpoon(ingredient.measures.metric.unitShort));
         if(!isSpoon(ingredient.measures.metric.unitShort)){
             convertedIngredients.push(convertSingleIngredientMeasureUnits(ingredient))
+        } else { 
+            convertedIngredients.push(ingredient);
         }
     });
     return convertedIngredients;
