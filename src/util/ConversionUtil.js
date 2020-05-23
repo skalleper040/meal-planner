@@ -18,8 +18,6 @@ export function convertIngredientListMeasureUnits(ingredients){
 export function convertIngredientsIgnoreSpoons(ingredients){
     let convertedIngredients = [];
     ingredients.forEach(ingredient =>{
-        console.log(ingredient.measures.metric.unitShort);
-        console.log(isSpoon(ingredient.measures.metric.unitShort));
         if(!isSpoon(ingredient.measures.metric.unitShort)){
             convertedIngredients.push(convertSingleIngredientMeasureUnits(ingredient))
         } else { 
