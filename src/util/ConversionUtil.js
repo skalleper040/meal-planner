@@ -1,4 +1,5 @@
 import _ from 'underscore';
+import { isCompositeComponent } from 'react-dom/test-utils';
 
 export function convertSingleIngredientMeasureUnits(ingredient) {
     let result = JSON.parse(JSON.stringify(ingredient)); //deep clone of ingredient.
@@ -14,7 +15,16 @@ export function convertIngredientListMeasureUnits(ingredients){
     return convertedIngredients;
 }
 
-
+//Keep spoons for recipe, i suppose. 
+export function convertIngredientsIgnoreSpoons(ingredients){
+    let convertedIngredients = [];
+    ingredients.forEach(ingredient =>{
+        if(!isSpoon(ingredient.measures.metric.unitShort)){
+            convertedIngredients.push(convertSingleIngredientMeasureUnits(ingredient))
+        }
+    });
+    return convertedIngredients;
+}
 
 function convertMeasures(ingredient) {
     convertMetricMeasures(ingredient);
@@ -85,10 +95,6 @@ function convertML(amount) {
             return roundMl(amount);
         }
     }
-}
-
-function convertMLUS(amount){
-
 }
 
 function convertG(amount) {
@@ -179,13 +185,8 @@ function isMetricVolumeMeasure(unit) {
         case 'cl':
         case 'dl':
         case 'l':
-        case 'tbsps':
-        case 'tbsp':
-        case 'tbs':
-        case 'tsps':
-        case 'tsp':
             return true;
-        default: return false;
+        default: return isSpoon(unit);
     }
 }
 
@@ -215,5 +216,19 @@ function isUSMeasure(unit) {
             return true;
         default:
             return false;
+    }
+}
+
+function isSpoon(unit){
+    let lcUnit = unit.toLowerCase();
+
+    switch(lcUnit){
+        case 'tbsps':
+        case 'tbsp':
+        case 'tbs':
+        case 'tsps':
+        case 'tsp':
+            return true;
+        default: return false;
     }
 }
