@@ -6,7 +6,8 @@ import Day from './components/Day';
 import Meal from './components/Meal';
 import Recipe from './components/Recipe';
 import ShoppingList from './components/ShoppingList';
-import { cacheMeal } from './util/APIUtil'
+import { cacheMeal } from './util/APIUtil';
+import {convertIngredientsIgnoreSpoons} from './util/ConversionUtil';
 import {
   BrowserRouter as Router,
   Switch,
@@ -96,6 +97,8 @@ class App extends React.Component {
   getRandomRecipe(dishType) {
     var recipes = JSON.parse(localStorage.getItem(dishType + "-meals"));
     let recipe = recipes[Math.floor(Math.random() * recipes.length)];
+    console.log("recipe: ", recipe);
+    recipe.extendedIngredients = convertIngredientsIgnoreSpoons(recipe.extendedIngredients);
     return recipe;
   }
 

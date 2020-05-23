@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'underscore';
 import IngredientGroup from './IngredientGroup';
-import {convertSingleIngredientMeasureUnits, convertIngredientListMeasureUnits} from '../util/ConversionUtil.js';
+import {convertIngredientListMeasureUnits} from '../util/ConversionUtil.js';
 class ShoppingList extends React.Component {
 
     constructor(props) {
@@ -72,7 +72,6 @@ class ShoppingList extends React.Component {
                 })
             }
         })
-        console.log(ingredients);
         let convertedIngredients = convertIngredientListMeasureUnits(ingredients);
 
         return convertedIngredients;
