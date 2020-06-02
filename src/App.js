@@ -7,12 +7,14 @@ import Meal from './components/Meal';
 import Recipe from './components/Recipe';
 import ShoppingList from './components/ShoppingList';
 import { cacheMeal } from './util/APIUtil';
-import {convertIngredientsIgnoreSpoons} from './util/ConversionUtil';
+import { convertIngredientsIgnoreSpoons } from './util/ConversionUtil';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
 } from "react-router-dom";
+import _ from "underscore";
+import update from 'immutability-helper';
 
 import './App.css';
 
@@ -23,15 +25,28 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      days: [],
+      days: JSON.parse(localStorage.getItem("days")) || [],
       isLoading: true,
       fetchError: false,
-      units: 'metric',
+      units: localStorage.getItem("units") || "metric",
       progress: 10,
-      counter: 1
+      counter: JSON.parse(localStorage.getItem("counter")) || 1
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (!_.isEqual(prevState.days, this.state.days)) {
+      localStorage.setItem("days", JSON.stringify(this.state.days))
+    }
+
+    if (prevState.counter !== this.state.counter) {
+      localStorage.setItem("counter", this.state.counter)
+    }
+
+    if (prevState.units !== this.state.units) {
+      localStorage.setItem("units", this.state.units)
+    }
+  }
   async componentDidMount() {
 
     for (let i = 0; i < dishTypes.length; i++) {
@@ -85,12 +100,13 @@ class App extends React.Component {
     })
   }
 
+
   removeDay = (id) => {
-    var tempDays = this.state.days;
-    var index = tempDays.findIndex(day => day.id === id);
+    var index = this.state.days.findIndex(day => day.id === id);
     if (index !== -1) {
-      tempDays.splice(index, 1);
-      this.setState({ days: tempDays });
+      this.setState((prevState) => ({
+        days: [...prevState.days.slice(0, index), ...prevState.days.slice(index + 1)]
+      }));
     }
   }
 
@@ -103,36 +119,41 @@ class App extends React.Component {
   }
 
   generateMeal = (dayId, dishType) => {
-    let days = [...this.state.days];
-    var index = days.findIndex(day => day.id === dayId);
+    const index = this.state.days.findIndex(day => day.id === dayId);
     let recipe = this.getRandomRecipe(dishType);
-    days[index].meals = {
-      ...days[index].meals,
-      [dishType]: {
-        ...days[index].meals[dishType],
-        recipe: recipe
-      }
-    }
-    this.setState({
-      days: days
-    })
+    this.setState((state) =>
+      update(state, {
+        days: {
+          [index]:
+          {
+            meals: {
+              [dishType]: {
+                recipe:
+                  { $set: recipe }
+              }
+            }
+          }
+        }
+      }))
   }
 
   skipMeal = (dayId, dishType) => {
-    let days = [...this.state.days];
-    var index = days.findIndex(day => day.id === dayId);
-    console.log(days[index].meals)
-    days[index].meals = {
-      ...days[index].meals,
-      [dishType]: {
-        ...days[index].meals[dishType],
-        disabled: !days[index].meals[dishType].disabled
-      }
-    }
-    this.setState({
-      days: days
-    })
-  }
+    const index = this.state.days.findIndex(day => day.id === dayId);
+    this.setState((state) =>
+      update(state, {
+        days: {
+          [index]:
+          {
+            meals: {
+              [dishType]: {
+                disabled:
+                  { $set: !this.state.days[index].meals[dishType].disabled }
+              }
+            }
+          }
+        }
+      }))
+  };
 
   render() {
     if (this.state.isLoading) {
@@ -177,7 +198,7 @@ class App extends React.Component {
                       key={'day' + day.id}
                       id={day.id}
                       removeDay={(id) => this.removeDay(id)}
-                      >
+                    >
                       {Object.entries(day.meals).map((meal) =>
                         <Meal
                           key={day.id + meal[0]}
