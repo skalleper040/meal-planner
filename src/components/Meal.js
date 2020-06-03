@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 function Meal(props) {
     const disabled = props.meal[1].disabled;
+
     if (disabled) {
         return (
             <li className="list-group-item p-4">
@@ -17,6 +18,7 @@ function Meal(props) {
         return (
 
             <li className="list-group-item p-4">
+                <img src={props.meal[1].recipe.image} className="rounded img-fluid"></img>
                 <h6 className="text-center my-2">
                     {props.meal[1].recipe.title}
                 </h6>
