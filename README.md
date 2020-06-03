@@ -1,68 +1,32 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+# Meal Planner
 
-In the project directory, you can run:
+Meal planner is a tool to aid you in figuring out what to eat and plan your meals as well as provide means to help you do your grocery shopping by providing a shopping list based on the recipes you have added. 
+  
+## Technology
 
-### `npm start`
+The project is built with React primarily because it is the current market leader for front-end web frameworks [1] with a slight lead over vue.js in both prevalence on the market as well as satisfaction ratings by developers. Angular, another popular front-end framework, has seen a decrease in popularity the past couple of years.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+The suitability of several frameworks was also taken into consideration when making the choice. With regards to this, Angular was discarded primarily because it is said to have a pretty steep learning curve [2], and the duration of this project was comparatively short.
+ 
+ In short, React was chosen because of its leading prevalence on the market, ease of access and community support.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Installation
 
-### `npm test`
+2.  `$ git clone https://github.com/skalleper040/meal-planner.git`
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+3.  `$ cd meal-planner`
 
-### `npm run build`
+4.  `$ npm install`
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+5.  `$ npm start` 
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+6. `Meal Planner will now run on: ` [localhost:3000](http://localhost:3000) 
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+  
 
-### `npm run eject`
+#### Sources
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+[1] https://2019.stateofjs.com/front-end-frameworks/
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+[2] https://levelup.gitconnected.com/angular-vs-react-vs-vue-which-is-the-best-choice-for-2020-81f577697c7e
